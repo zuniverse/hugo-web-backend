@@ -1,0 +1,13 @@
+p.list-content {
+  margin: 0;
+}
+p.edit-page {
+  margin: 1rem 0 0 0;
+}
+p.edit-comment {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+p.edit-label {
+  font-weight: bold;
+}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %} List Images {% endblock %}
+
+{% block content %}
+    <h3>{{ utc_dt }}</h3>
+
+    {% for file_name in file_struct %}
+      <p class="list-content"><a href="{{ url_for('download_file', name=file_name.file_path) }}">{{ file_name.file_path }}</a></p>
+    {% endfor %}
+
+{% endblock %}

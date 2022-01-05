@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %} Upload new File {% endblock %}
+
+{% block content %}
+    <h3>{{ utc_dt }}</h3>
+    <h1>Upload new File</h1>
+    <form method=post enctype=multipart/form-data>
+      <select name="content_type" id="content-type" required>
+        <option value="">--Please choose an option--</option>
+        {% for type in content_types %}
+          <option value="{{ type }}">{{ type }}</option>
+        {% endfor %}
+      </select>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>
+
+{% endblock %}

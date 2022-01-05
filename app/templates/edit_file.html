@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %} edit {% endblock %}
+
+{% block content %}
+  <h1>{{ file_path }}</h1>
+  <h3>{{ utc_dt }}</h3>
+  <form action="/receiveedit" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="file_path" value="{{ file_path }}">
+    <input type="hidden" name="file_name" value="{{ file_name }}">
+    <input type="hidden" name="is_new_file" value="{{ is_new_file }}">
+    
+    {# Title only on new content #}
+    {% if is_new_file %}
+      <p class="edit-page edit-label">ENTER TITLE OF NEW FILE, usually same a title of painting, it will also be used to form the URL.</p>
+      <input type="text" name="title_new_file" placeholder="Enter title" required>
+    {% endif %}
+    
+    {% for each_line_dict in file_as_dict.header %}
+      {% if not each_line_dict.input_field %}
+        <p class="edit-page edit-comment">{{ each_line_dict.value }}</p>
+      {% else %}
+        <div>
+          <p class="edit-page edit-label">{{ each_line_dict.key }}</p>
+          
+          {# exception for date field on new content #}
+          {% if is_new_file and each_line_dict.key == '1_date' %}
+            <input type="text" name="{{ each_line_dict.key }}" value="{{ utc_dt }}">
+          
+          {% elif each_line_dict.structure.is_upload == False %}
+            <input type="text" name="{{ each_line_dict.key }}" value="{{ each_line_dict.value }}">
+          
+          {% else %}
+            <select name="{{ each_line_dict.key }}" id="image-name" value="{{ each_line_dict.value }}">
+              <option value="">-- new image --</option>
+              {% for img_path in image_list %}
+                <option value="{{ img_path.file_path }}"{% if each_line_dict.value == img_path.file_path %} selected{% endif %}>{{ img_path.file_path }}</option>
+              {% endfor %}
+            </select>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    <hr>
+    <h2>Body</h2>
+    <textarea name="body" rows="10" cols="100%">{{ file_as_dict.body }}</textarea>
+    <input class="btn btn-success" type="submit" value="Submit">
+  </form>
+{% endblock %}
