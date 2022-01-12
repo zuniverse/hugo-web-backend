@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %} Deploy {% endblock %}
+
+{% block content %}
+  <h3>{{ utc_dt }}</h3>
+  <p>return code = {{ rc.returncode }}</p>
+  <h2>stdout</h2>
+  {% for each_line in stdout_as_list_of_lines %}
+    <p class="list-content">{{ each_line }}</p>
+  {% endfor %}
+{% endblock %}

@@ -41,3 +41,23 @@ make test
 - make run-prod
 
 - fix link to non static dir images
+
+#### checklist
+
+- list content directory
+
+- list image directory
+
+- list archetypes directory
+
+- read a file with toml header and a text body
+
+- edit that file
+
+- take toml header and parse as key value fields when appropriate
+
+- display images when editing file
+
+- write the file with edits in the appropriate directory
+
+- launch script to run bash shell for git and Hugo create site

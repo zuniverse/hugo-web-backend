@@ -1,7 +1,6 @@
 import os
 import datetime
 import re
-import toml
 import urllib.parse
 
 from app import app
@@ -105,20 +104,6 @@ def parse_header_content(header_str):
                 full_file.append(each_line_dict)
 
     return full_file
-
-
-def get_toml_header(str_file_content):
-    '''toml function'''
-    header = re.search(r'\+\+\+(.*)\+\+\+', str_file_content, re.DOTALL).group(1)
-    parsed_toml = toml.loads(header)
-    new_toml_string = toml.dumps(parsed_toml)
-    return new_toml_string
-
-
-def parse_toml_string(toml_string):
-    '''toml function'''
-    parsed_toml = toml.loads(toml_string)
-    return parsed_toml
 
 
 def allowed_file(filename):

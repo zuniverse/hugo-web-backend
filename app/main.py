@@ -7,9 +7,9 @@ import urllib.parse
 from werkzeug.utils import secure_filename, send_from_directory
 
 from .utils import sanitize_string, list_all_files, get_file_header_and_body, \
-    parse_header_content, get_toml_header, parse_toml_string, allowed_file, get_current_time
+    allowed_file, get_current_time
 
-from app import app
+from app import app  # app is declared in __init__.py
 # app.secret_key = b'_9#y2L"F4Q8z\n\xec]/'
 # app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000  # limit the maximum allowed payload to 16 megabytes
 # app.config['UPLOAD_FOLDER'] = app.config['IMG_UPLOAD_FOLDER']
@@ -200,3 +200,30 @@ def download_file(name):
         environ='', 
         # as_attachment=True
     )
+
+
+@app.route('/deploy')
+def send_to_prod():
+    '''Launch script to git pull / push and rsync to prod.'''
+    
+    import subprocess
+    import json
+
+    rc = subprocess.run(
+        ["/home/paul/public_html/python/flask/hugo-web-backend/test_script.sh",
+         "/dev/null"],
+        capture_output=True,
+        shell=True,
+        text=True,
+        encoding='utf-8',
+    )
+
+    # return json.dumps(rc.stdout.splitlines())
+
+    return render_template(
+        'deploy.html', 
+        utc_dt=get_current_time(),
+        rc=rc,
+        stdout_as_list_of_lines=rc.stdout.splitlines(),  # because stdout comes out as byte str with no eol
+    )
+    
