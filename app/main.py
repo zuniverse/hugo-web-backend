@@ -5,6 +5,8 @@ import os
 import re
 import urllib.parse
 from werkzeug.utils import secure_filename, send_from_directory
+import subprocess
+import json
 
 from .utils import sanitize_string, list_all_files, get_file_header_and_body, \
     allowed_file, get_current_time
@@ -194,7 +196,7 @@ def download_file(name):
     print(name)
     '''https://flask.palletsprojects.com/en/1.0.x/api/#flask.send_from_directory'''
     return send_from_directory(
-        # directory=app.config['app.config['LOCATION_OF_STATIC_FILE']'], 
+        # directory=app.config['app.config['LOCATION_OF_STATIC_DIR']'], 
         directory='../',
         path=name,
         environ='', 
@@ -205,17 +207,17 @@ def download_file(name):
 @app.route('/deploy')
 def send_to_prod():
     '''Launch script to git pull / push and rsync to prod.'''
-    
-    import subprocess
-    import json
 
     rc = subprocess.run(
-        ["/home/paul/public_html/python/flask/hugo-web-backend/test_script.sh",
-         "/dev/null"],
+        [
+          app.config['ABS_PATH_DEPLOY_SCRIPT'],
+          "/dev/null"
+        ],
         capture_output=True,
         shell=True,
         text=True,
         encoding='utf-8',
+        cwd=app.config['ABS_PATH_DEPLOY_DIR'],
     )
 
     # return json.dumps(rc.stdout.splitlines())
