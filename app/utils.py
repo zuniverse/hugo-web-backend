@@ -14,6 +14,7 @@ def list_all_files(content_path, is_new_file = False):
     for root, dirs, files in os.walk(content_path):
         for f in files:
             file_name = root + os.path.sep + f
+            img_path_relative_to_img_dir = re.search(r'([^/]+)/([^/]+)$', file_name, re.DOTALL).group(0)
             params = {'q': file_name, 'isnewfile': is_new_file}
             encoded_params = urllib.parse.urlencode(params)
             struct.append({
@@ -21,6 +22,7 @@ def list_all_files(content_path, is_new_file = False):
                 'encoded_params': encoded_params,
                 'file_name': f,
                 'category': root,
+                'rel_img_path': img_path_relative_to_img_dir,
             })
     sorted_struct = sorted(struct, key=lambda d: d['file_path'].lower()) 
 
