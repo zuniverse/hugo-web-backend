@@ -9,10 +9,10 @@ control, such as configuration secrets and the database file.
 
 from flask import Flask
 
-# from instance.config import LOCATION_OF_STATIC_FILE
+# from instance.config import LOCATION_OF_STATIC_DIR
 
 app = Flask(__name__, 
-            # static_folder=os.path.abspath(LOCATION_OF_STATIC_FILE),
+            # static_folder=os.path.abspath(LOCATION_OF_STATIC_DIR),
             instance_relative_config=True  # set this to have app.config.from_ object & pyfile below
             ) 
 

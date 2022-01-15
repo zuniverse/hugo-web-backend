@@ -11,3 +11,6 @@ p.edit-comment {
 p.edit-label {
   font-weight: bold;
 }
+input[type=text] {
+  width: 100%;
+}

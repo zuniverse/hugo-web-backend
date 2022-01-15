@@ -24,20 +24,22 @@
           <p class="edit-page edit-label">{{ each_line_dict.key }}</p>
           
           {# exception for date field on new content #}
-          {% if is_new_file and each_line_dict.key == '1_date' %}
+          {% if is_new_file and each_line_dict.key == '1_date' and each_line_dict.value == '{{ .Date }}' %}
             <input type="text" name="{{ each_line_dict.key }}" value="{{ utc_dt }}">
           
           {% elif each_line_dict.structure.is_upload == False %}
             <input type="text" name="{{ each_line_dict.key }}" value="{{ each_line_dict.value }}">
           
           {% else %}
+
             <select name="{{ each_line_dict.key }}" id="image-name" value="{{ each_line_dict.value }}">
               <option value="">-- new image --</option>
               {% for img_path in image_list %}
-                <option value="{{ img_path.file_path }}"{% if each_line_dict.value == img_path.file_path %} selected{% endif %}>{{ img_path.file_path }}</option>
+                <option value="{{ img_path.rel_img_path }}"{% if each_line_dict.value == img_path.rel_img_path %} selected{% endif %}>{{ img_path.rel_img_path }}</option>
               {% endfor %}
             </select>
           {% endif %}
+
         </div>
       {% endif %}
     {% endfor %}
@@ -45,6 +47,8 @@
     <hr>
     <h2>Body</h2>
     <textarea name="body" rows="10" cols="100%">{{ file_as_dict.body }}</textarea>
-    <input class="btn btn-success" type="submit" value="Submit">
+    <div class='my-3'>
+      <input class="btn btn-success" type="submit" value="Submit">
+    </div>
   </form>
 {% endblock %}
