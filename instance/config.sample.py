@@ -11,3 +11,11 @@ CONTENT_PATH = './dir/content'
 IMG_UPLOAD_FOLDER = './dir/static/img'
 ARCHETYPES_PATH = './dir/archetypes'
 ABS_PATH_DEPLOY_SCRIPT = '/home/user/test_script.sh'
+CONTENT_TYPES = [
+    'biographie',
+    'edition',
+    'home',
+    'humour',
+    'marketing',
+    'portraits',
+]

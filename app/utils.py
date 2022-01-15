@@ -48,7 +48,7 @@ def sanitize_string(original_string):
     clean_string = clean_string.replace(' ', '-')
     clean_string = clean_string.replace('"', '-')
     clean_string = clean_string.replace("'", '-')
-    clean_string = clean_string.replace(".", '-')
+    # clean_string = clean_string.replace(".", '-')
     clean_string = clean_string.replace("&", '-')
     clean_string = clean_string.replace("$", '-')
     clean_string = clean_string.replace("@", '-')

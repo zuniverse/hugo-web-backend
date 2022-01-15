@@ -7,7 +7,7 @@
     <h1>Upload new File</h1>
     <form method=post enctype=multipart/form-data>
       <select name="content_type" id="content-type" required>
-        <option value="">--Please choose an option--</option>
+        <option value="">--Please choose a section--</option>
         {% for type in content_types %}
           <option value="{{ type }}">{{ type }}</option>
         {% endfor %}
