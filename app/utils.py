@@ -48,12 +48,16 @@ def sanitize_string(original_string):
     clean_string = clean_string.replace(' ', '-')
     clean_string = clean_string.replace('"', '-')
     clean_string = clean_string.replace("'", '-')
-    # clean_string = clean_string.replace(".", '-')
+    # clean_string = clean_string.replace(".", '-') allows for file types and dots are not invalid in file names
     clean_string = clean_string.replace("&", '-')
     clean_string = clean_string.replace("$", '-')
     clean_string = clean_string.replace("@", '-')
     clean_string = clean_string.replace("#", '-')
     clean_string = clean_string.replace("=", '-')
+    clean_string = clean_string.replace(":", '-')
+    
+    # replace all occurrences of multiple "-" like "---" by just "-"
+    clean_string = re.sub(r'-+', '-', clean_string)
     
     return clean_string
   

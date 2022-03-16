@@ -124,6 +124,7 @@ def receive_edit():
     else:
         # OR create new file @TODO check dir exists, and create it if not.
         cleaned_file_name = sanitize_string(data['title_new_file'])
+        cleaned_file_name = cleaned_file_name.lower()
         # ^[^.]* match everything up to the first . 
         # \.(\w*$) match from last dot till end of str
         # /([^/]+)$ match last word of slug
