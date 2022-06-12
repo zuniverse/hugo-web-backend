@@ -25,6 +25,17 @@ LANGUAGES_AVAILABLE = [
     'en',
 ]
 
+'''
+##############################################
+    'key': {
+        'type_of_param': string: used to construct the field in ui
+            Possible values : 'datetime', 'bool', 'url','str',
+        'is_in_quotes': boolean: text field vs. system field like... a boolean true or false
+        'is_required': boolean
+        'is_upload': boolean: upload field, like an image
+    },
+##############################################
+'''
 PARAMETERS = {
     'date': {
         'type_of_param': 'datetime',
@@ -189,6 +200,12 @@ PARAMETERS = {
         'is_upload': False,
     },
     'youtube_video_height': {
+        'type': 'str',
+        'is_in_quotes': True,
+        'is_required': False,
+        'is_upload': False,
+    },
+    'url_to_page': {
         'type': 'str',
         'is_in_quotes': True,
         'is_required': False,
