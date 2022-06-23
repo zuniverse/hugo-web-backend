@@ -13,6 +13,9 @@ def list_all_files(content_path, is_new_file = False):
     struct = []    
     for root, dirs, files in os.walk(content_path):
         for f in files:
+            # skip '_index.en' & fr filenames
+            if f[:6] == '_index':
+                continue
             file_name = root + os.path.sep + f
             img_path_relative_to_img_dir = re.search(r'([^/]+)/([^/]+)$', file_name, re.DOTALL).group(0)
             params = {'q': file_name, 'isnewfile': is_new_file}
