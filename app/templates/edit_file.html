@@ -10,15 +10,25 @@
     <input type="hidden" name="file_name" value="{{ file_name }}">
     <input type="hidden" name="is_new_file" value="{{ is_new_file }}">
     
-    {# Title only on new content #}
+    {# Title input field only on new content #}
     {% if is_new_file %}
       <p class="edit-page edit-label">ENTER TITLE OF NEW FILE, usually same a title of painting, it will also be used to form the URL.</p>
       <input type="text" name="title_new_file" placeholder="Enter title" required>
     {% endif %}
     
     {% for each_line_dict in file_as_dict.header %}
+
+      {# is NOT an input field #}
       {% if not each_line_dict.input_field %}
-        <p class="edit-page edit-comment">{{ each_line_dict.value }}</p>
+
+        {# is template_display_only_raw_html (for ex a line separator) #}
+        {% if each_line_dict.key == 'template_display_only_raw_html' %}
+          {{ each_line_dict.value | safe }}
+        {% else %}
+          <p class="edit-page edit-comment">{{ each_line_dict.value }}</p>
+        {% endif %}
+
+      {# is input field #}
       {% else %}
         <div>
           <p class="edit-page edit-label">{{ each_line_dict.key }}</p>
@@ -27,11 +37,11 @@
           {% if is_new_file and each_line_dict.key == '1_date' and each_line_dict.value == '{{ .Date }}' %}
             <input type="text" name="{{ each_line_dict.key }}" value="{{ utc_dt }}">
           
+          {# is input field #}
           {% elif each_line_dict.structure.is_upload == False %}
             <input type="text" name="{{ each_line_dict.key }}" value="{{ each_line_dict.value }}">
           
           {% else %}
-
             <select name="{{ each_line_dict.key }}" id="image-name" value="{{ each_line_dict.value }}">
               <option value="">-- new image --</option>
               {% for img_path in image_list %}

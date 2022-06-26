@@ -22,6 +22,9 @@ app.config['UPLOAD_FOLDER'] = app.config['IMG_UPLOAD_FOLDER']
 
 @app.route('/')
 def index():
+    '''
+    List all files from the home page.
+    '''
     struct = list_all_files(app.config['CONTENT_PATH'])
 
     return render_template(
@@ -91,19 +94,25 @@ def receive_edit():
     recontructed_file = ['+++']
     
     for each_line in usable_dict['header']:
-        '''check first if it's a normal line or key value field'''
-        if each_line['input_field'] is False:
+        
+        # First, check first if it's only a template display field
+        if each_line['key'] == 'template_display_only_raw_html':
+            continue
+            
+        # then check if it's a normal line or key value field
+        elif each_line['input_field'] is False:
             recontructed_file.append(each_line['value'])
+            
         else:
             key = each_line['key']
 
-            '''clean the key, remove prefix "1_"... added for html uniqueness input name'''
+            # clean the key, remove prefix "1_"... added for html uniqueness input name
             clean_key = re.search(r'_(.*)', key, re.DOTALL).group(1)
             
-            '''get new value passed to data'''
+            # get new value passed to data
             val = data[key]
 
-            '''check if need quotes'''
+            # check if need quotes
             if each_line['structure']['is_in_quotes']:
                 val = '"' + val + '"'
                 
@@ -196,13 +205,31 @@ def download_file(name):
     '''
     print(name)
     '''https://flask.palletsprojects.com/en/1.0.x/api/#flask.send_from_directory'''
-    return send_from_directory(
-        # directory=app.config['app.config['LOCATION_OF_STATIC_DIR']'], 
-        directory='../',
-        path=name,
-        environ='', 
-        # as_attachment=True
+    
+    
+    # return send_from_directory(
+    #     # directory=app.config['app.config['LOCATION_OF_STATIC_DIR']'], 
+    #     directory='../',
+    #     path=name,
+    #     environ='', 
+    #     # as_attachment=True
+    # )
+    
+    # file:///home/paul/public_html/alice/alicelavBE/WEBSITE/static/img/agenda/bubbles-wide-agenda.jpg
+    
+    # https://stackoverflow.com/questions/26971491/how-do-i-link-to-images-not-in-static-folder-in-flask/26972238#26972238
+    MEDIA_FOLDER = os.path.join(
+        os.path.dirname(
+            os.path.dirname(
+                os.path.dirname(
+                    os.path.abspath(__file__)
+                )
+            )
+        ),
+        'data'
     )
+    
+    return send_from_directory(MEDIA_FOLDER, name, as_attachment=True)
 
 
 @app.route('/deploy')

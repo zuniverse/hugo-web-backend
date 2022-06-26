@@ -13,8 +13,8 @@ def list_all_files(content_path, is_new_file = False):
     struct = []    
     for root, dirs, files in os.walk(content_path):
         for f in files:
-            # skip '_index.en' & fr filenames
-            if f[:6] == '_index':
+            # skip '_index.en.md' & fr filenames
+            if f[:6] == '_index' or f == 'default.md':
                 continue
             file_name = root + os.path.sep + f
             img_path_relative_to_img_dir = re.search(r'([^/]+)/([^/]+)$', file_name, re.DOTALL).group(0)
@@ -85,10 +85,13 @@ def parse_header_content(header_str):
     '''
     full_file = []
     key_val_number = 0
+    field_separator = '<hr style="height: 20px; color: orange;">'
+    previous_line_was_a_comment = False  # so as to not separate each line in case of multi line comments
     for line in header_str:
         each_line_dict = {}
         line.strip()
         pos_of_equal = line.find('=')
+        
         # is the line an input key value field and NOT a comment ?
         if pos_of_equal != -1 and line[0] != '#':
             # key_val = line.split('=')
@@ -102,9 +105,22 @@ def parse_header_content(header_str):
                 'structure': app.config['PARAMETERS'][key]
             }
             full_file.append(each_line_dict)
-        # the line is a comment, or anything but an input field
+            previous_line_was_a_comment = False
+        
+        # else, the line IS a COMMENT, or anything but an input field
         else:
             if len(line) > 1:
+                # start by adding a separator if a comment
+                if line[0] == '#' and previous_line_was_a_comment is False:
+                    line_separator_dict = {
+                        'input_field': False,
+                        'key': 'template_display_only_raw_html',
+                        'value': field_separator,
+                    }
+                    full_file.append(line_separator_dict)
+                    previous_line_was_a_comment = True
+                
+                # get the field
                 each_line_dict = {
                     'input_field': False,
                     'key': None,

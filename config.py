@@ -194,5 +194,17 @@ PARAMETERS = {
         'is_required': False,
         'is_upload': False,
     },
+    'end_text': {
+        'type': 'str',
+        'is_in_quotes': True,
+        'is_required': False,
+        'is_upload': False,
+    },
+    'template_display_only_raw_html': {
+        'type': 'str',
+        'is_in_quotes': True,
+        'is_required': False,
+        'is_upload': False,
+    },
 }
 
