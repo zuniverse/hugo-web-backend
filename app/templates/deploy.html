@@ -4,9 +4,17 @@
 
 {% block content %}
   <h3>{{ utc_dt }}</h3>
-  <p>return code = {{ rc.returncode }}</p>
+
+  {% if rc.returncode != 0 %}
+    <p>Error return code (should be 0) = {{ rc.returncode }}</p>
+  {% endif %}
+  
   <h2>stdout</h2>
+  <h3>hugo_backend_dir={{ hugo_backend_dir }}</h3>
+  <h3>project_root_dir={{ project_root_dir }}</h3>
+
   {% for each_line in stdout_as_list_of_lines %}
     <p class="list-content">{{ each_line }}</p>
   {% endfor %}
+
 {% endblock %}

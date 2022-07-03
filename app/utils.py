@@ -10,6 +10,7 @@ def list_all_files(content_path, is_new_file = False):
     '''Lists all files and directories within a path, with params encoded and 
     matching the path name for easy url params.
     '''
+    print('content_path=' + content_path)
     struct = []    
     for root, dirs, files in os.walk(content_path):
         for f in files:

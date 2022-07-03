@@ -1,11 +1,14 @@
 from posixpath import abspath
 from flask import Flask, session, render_template, flash, request, redirect, url_for
 from markupsafe import escape
-import os
+import os, sys
+from pathlib import Path, PurePath
 import re
 import urllib.parse
 from werkzeug.utils import secure_filename, send_from_directory
 import subprocess
+# from subprocess import call
+
 import json
 
 from .utils import sanitize_string, list_all_files, get_file_header_and_body, \
@@ -206,6 +209,8 @@ def download_file(name):
     print(name)
     '''https://flask.palletsprojects.com/en/1.0.x/api/#flask.send_from_directory'''
     
+    # pass jusqu'a la solution
+    pass
     
     # return send_from_directory(
     #     # directory=app.config['app.config['LOCATION_OF_STATIC_DIR']'], 
@@ -236,24 +241,32 @@ def download_file(name):
 def send_to_prod():
     '''Launch script to git pull / push and rsync to prod.'''
 
+    hugo_backend_dir = os.getcwd()
+    print('hugo_backend_dir=' + hugo_backend_dir)
+    project_root_dir = os.path.abspath(hugo_backend_dir + "/../")
+    print('project_root_dir=' + project_root_dir)
+    print('sys.executable=')
+    print(sys.executable)
+
     rc = subprocess.run(
         [
-          app.config['ABS_PATH_DEPLOY_SCRIPT'],
-          "/dev/null"
+          app.config['ABS_PATH_DEPLOY_TEST_SCRIPT'],  # command or script to execute
+          "/dev/null"  # arg1, output to stdout
         ],
-        capture_output=True,
+        capture_output=True,  # capture_output est vrai, la sortie et l'erreur standard (stdout et stderr) sont capturées
         shell=True,
         text=True,
         encoding='utf-8',
-        cwd=app.config['ABS_PATH_DEPLOY_DIR'],
+        cwd=project_root_dir
     )
 
-    # return json.dumps(rc.stdout.splitlines())
-
+    
     return render_template(
         'deploy.html', 
         utc_dt=get_current_time(),
         rc=rc,
+        hugo_backend_dir=hugo_backend_dir,
+        project_root_dir=project_root_dir,
         stdout_as_list_of_lines=rc.stdout.splitlines(),  # because stdout comes out as byte str with no eol
     )
     

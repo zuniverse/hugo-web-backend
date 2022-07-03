@@ -4,11 +4,13 @@ SECRET_KEY = b''
 MAX_SIZE_UPLOAD_MEGS = 16 * 1000 * 1000  # limit the maximum allowed payload to 16 megabytes
 
 # Paths should be overridden locally in instance/config.py
-LOCATION_OF_STATIC_DIR = './website/'
-CONTENT_PATH = './website/content'
-IMG_UPLOAD_FOLDER = './website/static/img'
-ARCHETYPES_PATH = './website/archetypes'
-ABS_PATH_DEPLOY_SCRIPT = '/home/user/test_script.sh'
+LOCATION_OF_STATIC_DIR = '../../WEBSITE/'
+CONTENT_PATH = '../../WEBSITE/content'
+IMG_UPLOAD_FOLDER = '../../WEBSITE/static/img'
+ARCHETYPES_PATH = '../../WEBSITE/archetypes'
+ABS_PATH_DEPLOY_SCRIPT = '../../BUILD_MAIN.sh'
+ABS_PATH_DEPLOY_TEST_SCRIPT = './test_script.sh'
+ABS_PATH_DEPLOY_DIR = '../'
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
