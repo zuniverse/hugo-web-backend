@@ -260,13 +260,10 @@ def send_to_prod():
         cwd=project_root_dir
     )
 
-    
     return render_template(
         'deploy.html', 
         utc_dt=get_current_time(),
         rc=rc,
-        hugo_backend_dir=hugo_backend_dir,
-        project_root_dir=project_root_dir,
         stdout_as_list_of_lines=rc.stdout.splitlines(),  # because stdout comes out as byte str with no eol
     )
     
