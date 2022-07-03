@@ -1,8 +1,8 @@
 from posixpath import abspath
 from flask import Flask, session, render_template, flash, request, redirect, url_for
-from markupsafe import escape
+# from markupsafe import escape
 import os, sys
-from pathlib import Path, PurePath
+# from pathlib import Path, PurePath
 import re
 import urllib.parse
 from werkzeug.utils import secure_filename, send_from_directory
@@ -34,6 +34,7 @@ def index():
         'index.html', 
         utc_dt=get_current_time(),
         file_struct=struct,
+        custom_title='Home - List all content',
     )
     
 @app.route('/login', methods=['GET', 'POST'])
@@ -76,6 +77,7 @@ def edit_file():
         file_path=decoded_file_name,
         image_list=image_list,
         is_new_file=is_new_file,
+        custom_title='Edit file',
     )
 
   
@@ -173,6 +175,7 @@ def upload_file():
         'upload.html', 
         utc_dt=get_current_time(),
         content_types=app.config['CONTENT_TYPES'],
+        custom_title='Upload a new image or file',
     )
 
 
@@ -186,6 +189,7 @@ def select_archetypes():
         utc_dt=get_current_time(),
         file_struct=struct,
         is_new_file=True,
+        custom_title='New Page - Choose the type',
     )
 
 
@@ -198,6 +202,7 @@ def list_images():
         'list_images.html', 
         utc_dt=get_current_time(),
         file_struct=struct,
+        custom_title='List all images',
     )
 
 
@@ -239,7 +244,7 @@ def download_file(name):
 
 @app.route('/deploy')
 def send_to_prod():
-    '''Launch script to git pull / push and rsync to prod.'''
+    '''Launch script to git pull / push and rsync to prod, and display result to template.'''
 
     hugo_backend_dir = os.getcwd()
     print('hugo_backend_dir=' + hugo_backend_dir)
