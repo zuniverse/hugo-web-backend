@@ -142,5 +142,5 @@ def get_current_time():
     '''Return a time in the format 2022-01-04T15:43:56 to plug in easily as
     creation date in Hugo.
     '''
-    return datetime.datetime.utcnow().isoformat(timespec='seconds')
+    return datetime.datetime.now().isoformat(timespec='seconds')
 
