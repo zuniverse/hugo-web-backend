@@ -1,11 +1,12 @@
 from posixpath import abspath
-from flask import Flask, session, render_template, flash, request, redirect, url_for
+from flask import Flask, session, render_template, flash, request, redirect, url_for, \
+    send_from_directory
 # from markupsafe import escape
 import os, sys
 # from pathlib import Path, PurePath
 import re
 import urllib.parse
-from werkzeug.utils import secure_filename, send_from_directory
+from werkzeug.utils import secure_filename  #, send_from_directory
 import subprocess
 # from subprocess import call
 
@@ -28,12 +29,12 @@ def index():
     '''
     List all files from the home page.
     '''
-    struct = list_all_files(app.config['CONTENT_PATH'])
+    list_of_files = list_all_files(app.config['CONTENT_PATH'])
 
     return render_template(
         'index.html', 
         utc_dt=get_current_time(),
-        file_struct=struct,
+        list_of_files=list_of_files,
         custom_title='Home - List all content',
     )
     
@@ -187,7 +188,7 @@ def select_archetypes():
     return render_template(
         'index.html', 
         utc_dt=get_current_time(),
-        file_struct=struct,
+        list_of_files=struct,
         is_new_file=True,
         custom_title='New Page - Choose the type',
     )
@@ -196,51 +197,65 @@ def select_archetypes():
 @app.route('/list_images')
 def list_images():
 
-    struct = list_all_files(app.config['IMG_UPLOAD_FOLDER'])
+    list_of_files = list_all_files(app.config['IMG_UPLOAD_FOLDER'])
 
     return render_template(
         'list_images.html', 
         utc_dt=get_current_time(),
-        file_struct=struct,
+        list_of_files=list_of_files,
         custom_title='List all images',
     )
 
 
-@app.route("/uploads/<path:name>")
-def download_file(name):
+@app.route('/show_image')
+def show_image():
     '''Links to images in a different folder than static. 
     Uses send_from_directory.
     '''
-    print(name)
+    
+    encoded_file_path = request.args.get('q')
+    decoded_file_path = urllib.parse.unquote(encoded_file_path)
+    hugo_backend_dir = os.getcwd()
+    absolute_image_path = hugo_backend_dir + os.path.sep + decoded_file_path
+    
     '''https://flask.palletsprojects.com/en/1.0.x/api/#flask.send_from_directory'''
     
     # pass jusqu'a la solution
-    pass
+    # pass
     
-    # return send_from_directory(
-    #     # directory=app.config['app.config['LOCATION_OF_STATIC_DIR']'], 
-    #     directory='../',
+    # external_img = send_from_directory(
+    #     directory=app.config['app.config[LOCATION_OF_STATIC_DIR]'], 
+    #     # directory='../',
     #     path=name,
-    #     environ='', 
-    #     # as_attachment=True
+    #     # environ='', 
+    #     as_attachment=True
     # )
     
     # file:///home/paul/public_html/alice/alicelavBE/WEBSITE/static/img/agenda/bubbles-wide-agenda.jpg
     
     # https://stackoverflow.com/questions/26971491/how-do-i-link-to-images-not-in-static-folder-in-flask/26972238#26972238
-    MEDIA_FOLDER = os.path.join(
-        os.path.dirname(
-            os.path.dirname(
-                os.path.dirname(
-                    os.path.abspath(__file__)
-                )
-            )
-        ),
-        'data'
-    )
+    # MEDIA_FOLDER = os.path.join(
+    #     os.path.dirname(
+    #         os.path.dirname(
+    #             os.path.dirname(
+    #                 os.path.abspath(__file__)
+    #             )
+    #         )
+    #     ),
+    #     'data'
+    # )
     
-    return send_from_directory(MEDIA_FOLDER, name, as_attachment=True)
+    # return send_from_directory(MEDIA_FOLDER, name, as_attachment=True)
 
+    return render_template(
+        'show_image.html', 
+        utc_dt=get_current_time(),
+        external_img="external_img",
+        custom_title='Show 1 image',
+        decoded_file_path=decoded_file_path,
+        hugo_backend_dir=hugo_backend_dir,
+        absolute_image_path=absolute_image_path,
+    )
 
 @app.route('/deploy')
 def send_to_prod():

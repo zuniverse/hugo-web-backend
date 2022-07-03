@@ -5,8 +5,13 @@
 {% block content %}
     <h3>{{ utc_dt }}</h3>
 
-    {% for file_name in file_struct %}
-      <p class="list-content"><a href="{{ url_for('download_file', name=file_name.file_path) }}">{{ file_name.rel_img_path }}</a></p>
+    <div id="list-of-images">
+    {% for file_object in list_of_files %}
+      <p class="list-content img-file"><a href='{{ url_for("show_image") }}?{{ file_object.encoded_params }}'>{{ file_object.rel_img_path }}</a></p>
     {% endfor %}
+    </div> <!-- list-of-images -->
+    
+
+    <div id='img-placement'></div>
 
 {% endblock %}

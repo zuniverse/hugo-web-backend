@@ -11,18 +11,27 @@ def list_all_files(content_path, is_new_file = False):
     matching the path name for easy url params.
     '''
     print('content_path=' + content_path)
-    struct = []    
+    hugo_backend_dir = os.getcwd()
+    print('hugo_backend_dir=' + hugo_backend_dir)
+    project_root_dir = os.path.abspath(hugo_backend_dir + "/../")
+    print('project_root_dir=' + project_root_dir)
+    struct = []
+    
     for root, dirs, files in os.walk(content_path):
         for f in files:
             # skip '_index.en.md' & fr filenames
             if f[:6] == '_index' or f == 'default.md':
                 continue
-            file_name = root + os.path.sep + f
-            img_path_relative_to_img_dir = re.search(r'([^/]+)/([^/]+)$', file_name, re.DOTALL).group(0)
-            params = {'q': file_name, 'isnewfile': is_new_file}
+            # print(f)
+            file_path = root + os.path.sep + f
+            # print(file_name)
+            img_path_relative_to_img_dir = re.search(r'([^/]+)/([^/]+)$', file_path, re.DOTALL).group(0)
+            params = {'q': file_path, 'isnewfile': is_new_file}
             encoded_params = urllib.parse.urlencode(params)
+            params = {'q': f}
+            # print('filepath=' + f'{root + os.path.sep + f}')
             struct.append({
-                'file_path': f'{root + os.path.sep + f}',
+                'file_path': file_path,  # f'{root + os.path.sep + f}',
                 'encoded_params': encoded_params,
                 'file_name': f,
                 'category': root,

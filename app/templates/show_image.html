@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %} show_image {% endblock %}
+
+{% block content %}
+    <h3>{{ utc_dt }}</h3>
+    <h1>show_image</h1>
+    <p>absolute_image_path = {{ absolute_image_path }}</p>
+    <img src="{{ url_for(absolute_image_path) }}" />
+{% endblock %}
