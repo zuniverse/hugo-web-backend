@@ -3,10 +3,11 @@
 {% block title %} home {% endblock %}
 
 {% block content %}
-    <h3>{{ utc_dt }}</h3>
 
-    {% for file_name in file_struct %}
-      <p class="list-content"><a href='{{ url_for("edit_file") }}?{{ file_name.encoded_params }}'>{{ file_name.rel_img_path }}</a></p>
-    {% endfor %}
+  <h3>{{ utc_dt }}</h3>
+
+  {% for file_name in file_struct %}
+    <p class="list-content"><a href='{{ url_for("edit_file") }}?{{ file_name.encoded_params }}'>{{ file_name.rel_img_path }}</a></p>
+  {% endfor %}
 
 {% endblock %}

@@ -19,6 +19,10 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     {% include 'navbar.html' %}
+    {% if custom_title %}
+      <h1>{{ custom_title }}</h1>
+    {% endif %}
+
     <div class="container">
       {% block content %} {% endblock %}
     </div>
