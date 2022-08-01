@@ -317,7 +317,8 @@ def import_updates():
         capture_output=True,  # capture_output est vrai, la sortie et l'erreur standard (stdout et stderr) sont capturées
         shell=True,
         text=True,
-        encoding='utf-8',
+        # encoding='utf-8',
+        encoding = "ISO-8859-1",
         cwd=project_root_dir
     )
 
