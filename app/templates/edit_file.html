@@ -16,36 +16,45 @@
       <input type="text" name="title_new_file" placeholder="Enter title" required>
     {% endif %}
     
-    {% for each_line_dict in file_as_dict.header %}
+    {% for current_line_dict in file_as_dict.header %}
+
+      {# debug #}
+      {#
+      <ul>
+      {% for k, v in current_line_dict.items() %}
+        <li>{{ k }} => {{ v }}</li>
+      {% endfor %}
+      </ul>
+      #}
 
       {# is NOT an input field #}
-      {% if not each_line_dict.input_field %}
+      {% if not current_line_dict.is_input_field %}
 
         {# is template_display_only_raw_html (for ex a line separator) #}
-        {% if each_line_dict.key == 'template_display_only_raw_html' %}
-          {{ each_line_dict.value | safe }}
+        {% if current_line_dict.key == 'template_display_only_raw_html' %}
+          {{ current_line_dict.value | safe }}
         {% else %}
-          <p class="edit-page edit-comment">{{ each_line_dict.value }}</p>
+          <p class="edit-page edit-comment">{{ current_line_dict.value }}</p>
         {% endif %}
 
       {# is input field #}
       {% else %}
         <div>
-          <p class="edit-page edit-label">{{ each_line_dict.key }}</p>
+          <p class="edit-page edit-label">{{ current_line_dict.key }}</p>
           
           {# exception for date field on new content #}
-          {% if is_new_file and each_line_dict.key == '1_date' and each_line_dict.value == '{{ .Date }}' %}
-            <input type="text" name="{{ each_line_dict.key }}" value="{{ utc_dt }}">
+          {% if is_new_file and current_line_dict.key == '1_date' and current_line_dict.value == '{{ .Date }}' %}
+            <input type="text" name="{{ current_line_dict.key }}" value="{{ utc_dt }}">
           
           {# is input field #}
-          {% elif each_line_dict.structure.is_upload == False %}
-            <input type="text" name="{{ each_line_dict.key }}" value="{{ each_line_dict.value }}">
+          {% elif current_line_dict.structure.is_upload == False %}
+            <input type="text" name="{{ current_line_dict.key }}" value="{{ current_line_dict.value }}">
           
           {% else %}
-            <select name="{{ each_line_dict.key }}" id="image-name" value="{{ each_line_dict.value }}">
+            <select name="{{ current_line_dict.key }}" id="image-name" value="{{ current_line_dict.value }}">
               <option value="">-- new image --</option>
               {% for img_path in image_list %}
-                <option value="{{ img_path.rel_img_path }}"{% if each_line_dict.value == img_path.rel_img_path %} selected{% endif %}>{{ img_path.rel_img_path }}</option>
+                <option value="{{ img_path.rel_img_path }}"{% if current_line_dict.value == img_path.rel_img_path %} selected{% endif %}>{{ img_path.rel_img_path }}</option>
               {% endfor %}
             </select>
           {% endif %}

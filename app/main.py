@@ -85,6 +85,7 @@ def edit_file():
 @app.route('/receiveedit', methods=['POST'])
 def receive_edit():
     '''Receives and treats edits and new file creation.
+    Here we put special treatment to the ontent file, line by line.
     file_path is part of data as a hidden input.
     '''
     
@@ -99,27 +100,33 @@ def receive_edit():
     '''start with toml header start'''
     recontructed_file = ['+++']
     
-    for each_line in usable_dict['header']:
+    for current_line in usable_dict['header']:
         
         # First, check first if it's only a template display field
-        if each_line['key'] == 'template_display_only_raw_html':
+        if current_line['key'] == 'template_display_only_raw_html':
             continue
             
         # then check if it's a normal line or key value field
-        elif each_line['input_field'] is False:
-            recontructed_file.append(each_line['value'])
-            
+        elif current_line['is_input_field'] is False:
+            recontructed_file.append(current_line['value'])
+        
+        # current_line is an input field
         else:
-            key = each_line['key']
+            key = current_line['key']
 
             # clean the key, remove prefix "1_"... added for html uniqueness input name
             clean_key = re.search(r'_(.*)', key, re.DOTALL).group(1)
             
             # get new value passed to data
             val = data[key]
+            
+            # special treatment for booleans
+            if current_line['structure']['type'] == "bool":
+                # put here code... NO -> d it in template
+                pass
 
             # check if need quotes
-            if each_line['structure']['is_in_quotes']:
+            if current_line['structure']['is_in_quotes']:
                 val = '"' + val + '"'
                 
             recontructed_file.append(clean_key + ' = ' + val)
@@ -217,6 +224,7 @@ def show_image():
     decoded_file_path = urllib.parse.unquote(encoded_file_path)
     hugo_backend_dir = os.getcwd()
     absolute_image_path = hugo_backend_dir + os.path.sep + decoded_file_path
+    rel_img_path = request.args.get('rel_img_path')
     
     '''https://flask.palletsprojects.com/en/1.0.x/api/#flask.send_from_directory'''
     
@@ -255,6 +263,8 @@ def show_image():
         decoded_file_path=decoded_file_path,
         hugo_backend_dir=hugo_backend_dir,
         absolute_image_path=absolute_image_path,
+        rel_img_path=rel_img_path,
+        full_path_to_img=os.path.join('static/img', rel_img_path)
     )
 
 @app.route('/deploy')
@@ -281,9 +291,40 @@ def send_to_prod():
     )
 
     return render_template(
-        'deploy.html', 
+        'deploy.html',
+        tpl_title='Deploy to Prod',
         utc_dt=get_current_time(),
         rc=rc,
         stdout_as_list_of_lines=rc.stdout.splitlines(),  # because stdout comes out as byte str with no eol
     )
-    
+
+@app.route('/import-updates')
+def import_updates():
+    '''Launch script to git pull / push but NOT rsync to prod. Display result to template.'''
+
+    hugo_backend_dir = os.getcwd()
+    print('hugo_backend_dir=' + hugo_backend_dir)
+    project_root_dir = os.path.abspath(hugo_backend_dir + "/../")
+    print('project_root_dir=' + project_root_dir)
+    print('sys.executable=')
+    print(sys.executable)
+
+    rc = subprocess.run(
+        [
+          app.config['ABS_PATH_IMPORT_UPDATES_NO_DEPLOY_SCRIPT'],  # command or script to execute
+          "/dev/null"  # arg1, output to stdout
+        ],
+        capture_output=True,  # capture_output est vrai, la sortie et l'erreur standard (stdout et stderr) sont capturées
+        shell=True,
+        text=True,
+        encoding='utf-8',
+        cwd=project_root_dir
+    )
+
+    return render_template(
+        'deploy.html',
+        tpl_title='Import Updates',
+        utc_dt=get_current_time(),
+        rc=rc,
+        stdout_as_list_of_lines=rc.stdout.splitlines(),  # because stdout comes out as byte str with no eol
+    )

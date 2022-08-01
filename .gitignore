@@ -81,6 +81,7 @@ coverage.xml
 # virtualenv
 venv/
 ENV/
+pyvenv.cfg
 
 # Spyder project settings
 .spyderproject

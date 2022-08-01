@@ -7,6 +7,14 @@
 
     <div id="list-of-images">
     {% for file_object in list_of_files %}
+      {# debug #}
+      {#
+      <ul>
+        {% for k, v in file_object.items() %}
+        <li>{{ k }} => {{ v }}</li>
+        {% endfor %}
+      </ul>
+      #}
       <p class="list-content img-file"><a href='{{ url_for("show_image") }}?{{ file_object.encoded_params }}'>{{ file_object.rel_img_path }}</a></p>
     {% endfor %}
     </div> <!-- list-of-images -->

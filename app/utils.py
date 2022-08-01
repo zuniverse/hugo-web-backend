@@ -18,24 +18,25 @@ def list_all_files(content_path, is_new_file = False):
     struct = []
     
     for root, dirs, files in os.walk(content_path):
-        for f in files:
+        for file_name in files:
             # skip '_index.en.md' & fr filenames
-            if f[:6] == '_index' or f == 'default.md':
+            if file_name[:6] == '_index' or file_name == 'default.md':
                 continue
-            # print(f)
-            file_path = root + os.path.sep + f
+            # print(file_name)
+            file_path = root + os.path.sep + file_name
             # print(file_name)
             img_path_relative_to_img_dir = re.search(r'([^/]+)/([^/]+)$', file_path, re.DOTALL).group(0)
-            params = {'q': file_path, 'isnewfile': is_new_file}
+            params = {'q': file_path, 'isnewfile': is_new_file,
+                      'rel_img_path': img_path_relative_to_img_dir}
             encoded_params = urllib.parse.urlencode(params)
-            params = {'q': f}
-            # print('filepath=' + f'{root + os.path.sep + f}')
+            # print('filepath=' + f'{root + os.path.sep + file_name}')
             struct.append({
-                'file_path': file_path,  # f'{root + os.path.sep + f}',
+                'file_path': file_path,  # f'{root + os.path.sep + file_name}',
                 'encoded_params': encoded_params,
-                'file_name': f,
+                'file_name': file_name,
                 'category': root,
                 'rel_img_path': img_path_relative_to_img_dir,
+                # 'img_path_rel_to_local_symlink':
             })
     sorted_struct = sorted(struct, key=lambda d: d['file_path'].lower()) 
 
@@ -90,7 +91,9 @@ def get_file_header_and_body(head_and_body_str):
     
 
 def parse_header_content(header_str):
-    '''parse input fields from a list of strings
+    '''parse input fields from a list of strings.
+    Determine if each line of header is an input field or anything else.
+    If it is an input field, add a 1_, 2_, ... prefix to the value of 'key'.
     returns a dict.
     '''
     full_file = []
@@ -98,7 +101,7 @@ def parse_header_content(header_str):
     field_separator = '<hr style="height: 20px; color: orange;">'
     previous_line_was_a_comment = False  # so as to not separate each line in case of multi line comments
     for line in header_str:
-        each_line_dict = {}
+        current_line_dict = {}
         line.strip()
         pos_of_equal = line.find('=')
         
@@ -108,13 +111,13 @@ def parse_header_content(header_str):
             key_val_number += 1
             key = line[:pos_of_equal].strip()
             val = line[pos_of_equal + 1:].strip().strip('"')
-            each_line_dict = {
-                'input_field': True,
+            current_line_dict = {
+                'is_input_field': True,
                 'key': str(key_val_number) + '_' + key,
                 'value': val,
                 'structure': app.config['PARAMETERS'][key]
             }
-            full_file.append(each_line_dict)
+            full_file.append(current_line_dict)
             previous_line_was_a_comment = False
         
         # else, the line IS a COMMENT, or anything but an input field
@@ -123,7 +126,7 @@ def parse_header_content(header_str):
                 # start by adding a separator if a comment
                 if line[0] == '#' and previous_line_was_a_comment is False:
                     line_separator_dict = {
-                        'input_field': False,
+                        'is_input_field': False,
                         'key': 'template_display_only_raw_html',
                         'value': field_separator,
                     }
@@ -131,12 +134,12 @@ def parse_header_content(header_str):
                     previous_line_was_a_comment = True
                 
                 # get the field
-                each_line_dict = {
-                    'input_field': False,
+                current_line_dict = {
+                    'is_input_field': False,
                     'key': None,
                     'value': line,
                 }
-                full_file.append(each_line_dict)
+                full_file.append(current_line_dict)
 
     return full_file
 

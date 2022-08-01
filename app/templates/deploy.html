@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Deploy {% endblock %}
+{% block title %} {{ tpl_title }} {% endblock %}
 
 {% block content %}
   <h3>{{ utc_dt }}</h3>
@@ -9,7 +9,7 @@
     <p>Error return code (should be 0) = {{ rc.returncode }}</p>
   {% endif %}
 
-  <h2>Deploy</h2>
+  <h2>{{ tpl_title }}</h2>
 
   {% for each_line in stdout_as_list_of_lines %}
     <p class="list-content">{{ each_line }}</p>

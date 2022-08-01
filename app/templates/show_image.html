@@ -4,7 +4,17 @@
 
 {% block content %}
     <h3>{{ utc_dt }}</h3>
+    {# debug #}
+    {#
     <h1>show_image</h1>
+    <p>decoded_file_path={{ decoded_file_path }},</p>
+    <p>hugo_backend_dir={{ hugo_backend_dir }},</p>
     <p>absolute_image_path = {{ absolute_image_path }}</p>
-    <img src="{{ url_for(absolute_image_path) }}" />
+    <p>rel_img_path = {{ rel_img_path }}</p>
+    <p>full_path_to_img = {{ full_path_to_img }}</p>
+    #}
+    
+{#<img src="{{ url_for(full_path_to_img) }}" />#}
+<img src="{{ full_path_to_img }}" style="max-width: 500px;"/>
+{# <img src="static/bubbles.jpg" />#}
 {% endblock %}

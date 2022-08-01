@@ -11,14 +11,17 @@ ARCHETYPES_PATH = '../../WEBSITE/archetypes'
 ABS_PATH_DEPLOY_SCRIPT = '../../BUILD_MAIN.sh'
 ABS_PATH_DEPLOY_TEST_SCRIPT = './test_script.sh'
 ABS_PATH_DEPLOY_DIR = '../'
+# ABS_PATH_IMPORT_UPDATES_NO_DEPLOY_SCRIPT = './test_script.sh'
+ABS_PATH_IMPORT_UPDATES_NO_DEPLOY_SCRIPT = './IMPORTER_MISES_A_JOUR.sh'
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 CONTENT_TYPES = [
-    'agenda',
-    'contemporain',
-    'dessins',
     'home',
+    'animation',
+    'news',
+    'photos',
+    'dessins',
     'peintures',
 ]
 
@@ -30,7 +33,7 @@ LANGUAGES_AVAILABLE = [
 '''
 ##############################################
     'key': {
-        'type_of_param': string: used to construct the field in ui
+        'type': string: used to construct the field in ui
             Possible values : 'datetime', 'bool', 'url','str',
         'is_in_quotes': boolean: text field vs. system field like... a boolean true or false
         'is_required': boolean
@@ -40,7 +43,7 @@ LANGUAGES_AVAILABLE = [
 '''
 PARAMETERS = {
     'date': {
-        'type_of_param': 'datetime',
+        'type': 'datetime',
         'is_in_quotes': True,
         'is_required': True,
         'is_upload': False,

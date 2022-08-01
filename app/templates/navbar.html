@@ -24,6 +24,7 @@
             Deploy
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{{ url_for('import_updates') }}">Import Updates</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{ url_for('send_to_prod') }}">Deploy to prod</a></li>
           </ul>
