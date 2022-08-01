@@ -272,21 +272,22 @@ def send_to_prod():
     '''Launch script to git pull / push and rsync to prod, and display result to template.'''
 
     hugo_backend_dir = os.getcwd()
-    print('hugo_backend_dir=' + hugo_backend_dir)
     project_root_dir = os.path.abspath(hugo_backend_dir + "/../")
+    
+    print('hugo_backend_dir=' + hugo_backend_dir)
     print('project_root_dir=' + project_root_dir)
-    print('sys.executable=')
-    print(sys.executable)
+    print('sys.executable=' + sys.executable)
 
     rc = subprocess.run(
         [
-          app.config['ABS_PATH_DEPLOY_TEST_SCRIPT'],  # command or script to execute
+          app.config['ABS_PATH_DEPLOY_SCRIPT'],  # command or script to execute
           "/dev/null"  # arg1, output to stdout
         ],
         capture_output=True,  # capture_output est vrai, la sortie et l'erreur standard (stdout et stderr) sont capturées
         shell=True,
         text=True,
-        encoding='utf-8',
+        # encoding='utf-8',
+        encoding = "ISO-8859-1",
         cwd=project_root_dir
     )
 
@@ -303,11 +304,11 @@ def import_updates():
     '''Launch script to git pull / push but NOT rsync to prod. Display result to template.'''
 
     hugo_backend_dir = os.getcwd()
-    print('hugo_backend_dir=' + hugo_backend_dir)
     project_root_dir = os.path.abspath(hugo_backend_dir + "/../")
+    
+    print('hugo_backend_dir=' + hugo_backend_dir)
     print('project_root_dir=' + project_root_dir)
-    print('sys.executable=')
-    print(sys.executable)
+    print('sys.executable=' + sys.executable)
 
     rc = subprocess.run(
         [
