@@ -20,6 +20,7 @@
 
       {# debug #}
       {#
+      <hr style="height: 3px;color: red;">
       <ul>
       {% for k, v in current_line_dict.items() %}
         <li>{{ k }} => {{ v }}</li>
@@ -45,6 +46,13 @@
           {# exception for date field on new content #}
           {% if is_new_file and current_line_dict.key == '1_date' and current_line_dict.value == '{{ .Date }}' %}
             <input type="text" name="{{ current_line_dict.key }}" value="{{ utc_dt }}">
+
+          {# exception for is draft boolean field #}
+          {% elif current_line_dict.structure.type == 'bool' and 'draft' in current_line_dict.key %}
+          <select name="{{ current_line_dict.key }}" id="is_draft" value="{{ current_line_dict.value }}">
+            <option value="false"{% if current_line_dict.value == "false" %} selected{% endif %}>False - Page will be displayed</option>
+            <option value="true"{% if current_line_dict.value == "true" %} selected{% endif %}>True - Page will NOT be displayed</option>
+          </select>
           
           {# is input field #}
           {% elif current_line_dict.structure.is_upload == False %}

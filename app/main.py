@@ -101,7 +101,7 @@ def receive_edit():
     recontructed_file = ['+++']
     
     for current_line in usable_dict['header']:
-        
+        # print(current_line)  # debug
         # First, check first if it's only a template display field
         if current_line['key'] == 'template_display_only_raw_html':
             continue
