@@ -227,33 +227,7 @@ def show_image():
     rel_img_path = request.args.get('rel_img_path')
     
     '''https://flask.palletsprojects.com/en/1.0.x/api/#flask.send_from_directory'''
-    
-    # pass jusqu'a la solution
-    # pass
-    
-    # external_img = send_from_directory(
-    #     directory=app.config['app.config[LOCATION_OF_STATIC_DIR]'], 
-    #     # directory='../',
-    #     path=name,
-    #     # environ='', 
-    #     as_attachment=True
-    # )
-    
-    # file:///home/paul/public_html/alice/alicelavBE/WEBSITE/static/img/agenda/bubbles-wide-agenda.jpg
-    
-    # https://stackoverflow.com/questions/26971491/how-do-i-link-to-images-not-in-static-folder-in-flask/26972238#26972238
-    # MEDIA_FOLDER = os.path.join(
-    #     os.path.dirname(
-    #         os.path.dirname(
-    #             os.path.dirname(
-    #                 os.path.abspath(__file__)
-    #             )
-    #         )
-    #     ),
-    #     'data'
-    # )
-    
-    # return send_from_directory(MEDIA_FOLDER, name, as_attachment=True)
+    # send_from_directory didnt work for me so I used a symlink
 
     return render_template(
         'show_image.html', 
@@ -329,4 +303,47 @@ def import_updates():
         utc_dt=get_current_time(),
         rc=rc,
         stdout_as_list_of_lines=rc.stdout.splitlines(),  # because stdout comes out as byte str with no eol
+    )
+
+@app.route('/delete', methods=['GET', 'POST'])
+def delete_file():
+    # print (request.__dict__)  # debug
+
+    if request.method == 'GET':
+        encoded_file_name = request.args.get('q')
+        if encoded_file_name is not None:
+            decoded_file_name = urllib.parse.unquote(encoded_file_name)
+        else:
+            decoded_file_name = ""
+
+        return render_template(
+            'delete.html', 
+            utc_dt=get_current_time(),
+            file_path=decoded_file_name,
+            custom_title='Delete file',
+        )
+    if request.method == 'POST':
+        # The requests.Response() Object contains the server's response to the HTTP request
+        # Get POST data.
+        data = request.form
+        
+        if data['file_path'] is not None: 
+            file_path = data['file_path']
+            print ('****** DELETE ' + file_path) 
+        
+            # If file exists, delete it
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+            else:    ## Show an error ##
+                print("Error: %s file not found" % file_path)
+                flash("Error: %s file not found" % file_path)
+
+        '''redirect as PRG pattern'''
+        return redirect(url_for('index'))
+
+    return render_template(
+        'delete.html', 
+        utc_dt=get_current_time(),
+        content_types=app.config['CONTENT_TYPES'],
+        custom_title='Confirm',
     )

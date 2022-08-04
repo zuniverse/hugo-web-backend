@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} Delete a file {% endblock %}
+
+{% block content %}
+    <h3>{{ utc_dt }}</h3>
+    <p>Confirm delete : {{ file_path }}</p>
+    <form method=post>
+      <input type="hidden" name="file_path" value="{{ file_path }}">
+      <input class="btn btn-danger" type="submit" value="Delete">
+    </form>
+    <div class='my-3'>
+      <a class="btn btn-success" href='{{ url_for("index") }}'>Cancel</a>
+    </div>
+
+{% endblock %}

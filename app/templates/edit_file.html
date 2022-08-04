@@ -78,4 +78,11 @@
       <input class="btn btn-success" type="submit" value="Submit">
     </div>
   </form>
+
+  {% if not is_new_file %}
+  <div class='my-3'>
+    <a class="btn btn-danger" href='{{ url_for("delete_file") }}?q={{ file_path }}'>Delete</a>
+  </div>
+  {% endif %}
+
 {% endblock %}
