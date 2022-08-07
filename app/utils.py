@@ -156,7 +156,8 @@ def get_current_time():
     '''Return a time in the format 2022-01-04T15:43:56 to plug in easily as
     creation date in Hugo.
     '''
-    return datetime.datetime.now().isoformat(timespec='seconds')
+    # return datetime.datetime.now().isoformat(timespec='seconds')  # Adjusts for daylight savings time
+    return datetime.datetime.utcnow().isoformat(timespec='seconds')  # Daylight savings time Not taken into account
 
 def add_to_erazed_files_list(file_path):
     '''Add the file path of the file just erazed to keep track.'''
