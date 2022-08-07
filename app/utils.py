@@ -3,6 +3,8 @@ import datetime
 import re
 import urllib.parse
 
+from flask import flash
+
 from app import app
 
 
@@ -158,5 +160,9 @@ def get_current_time():
 
 def add_to_erazed_files_list(file_path):
     '''Add the file path of the file just erazed to keep track.'''
-    erazed_files = open(app.config['LOCATION_OF_STATIC_DIR'] + app.config['LIST_OF_ERAZED_FILES'], "a")
-    erazed_files.write(file_path + "\n")
+    try:
+        erazed_files = open(app.config['LOCATION_OF_STATIC_DIR'] + app.config['LIST_OF_ERAZED_FILES'], "a")
+        erazed_files.write(file_path + "\n")
+    except:
+        print("Error printing to erazed_file.txt: %s" % erazed_files)
+        flash("Error printing to erazed_file.txt: %s" % erazed_files)
