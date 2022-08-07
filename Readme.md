@@ -18,21 +18,19 @@ It does not hold a wsgi interface because it is not supposed to face the public,
 
 - Bootstrap
 
+### First setup
+
+- Setup virtualenv as venv
+
 ### Start app in dev mode
 
 ```sh
-make run-dev
-```
-
-### Run tests
-
-```sh
-make test
+./start_backend.sh
 ```
 
 #### TODO
 
-- More tests
+- Tests
 
 - react or vuejs front-end
 
@@ -61,3 +59,5 @@ make test
 - write the file with edits in the appropriate directory
 
 - launch script to run bash shell for git and Hugo create site
+
+- delete content files
