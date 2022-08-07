@@ -53,6 +53,9 @@ PARAMETERS = {
         'is_in_quotes': False,
         'is_required': True,
         'is_upload': False,
+        'value_by_default': False,
+        'display_text_on_true': 'True - Page will NOT be displayed',
+        'display_text_on_false': 'False - Page will be displayed',
     },
     'og_image': {
         'type': 'url',
@@ -227,6 +230,15 @@ PARAMETERS = {
         'is_in_quotes': True,
         'is_required': False,
         'is_upload': False,
+    },
+    'display_on_section_gallery': {
+        'type': 'bool',
+        'is_in_quotes': False,
+        'is_required': False,
+        'is_upload': False,
+        'value_by_default': True,
+        'display_text_on_true': 'True - Image will be displayed',
+        'display_text_on_false': 'False - Image will NOT be displayed',
     },
 }
 
