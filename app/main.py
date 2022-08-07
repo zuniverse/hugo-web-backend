@@ -13,7 +13,7 @@ import subprocess
 import json
 
 from .utils import sanitize_string, list_all_files, get_file_header_and_body, \
-    allowed_file, get_current_time
+    allowed_file, get_current_time, add_to_erazed_files_list
 
 from app import app  # app is declared in __init__.py
 # app.secret_key = b'_9#y2L"F4Q8z\n\xec]/'
@@ -334,6 +334,7 @@ def delete_file():
             # If file exists, delete it
             if os.path.isfile(file_path):
                 os.remove(file_path)
+                add_to_erazed_files_list(file_path)
             else:    ## Show an error ##
                 print("Error: %s file not found" % file_path)
                 flash("Error: %s file not found" % file_path)

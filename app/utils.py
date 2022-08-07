@@ -156,3 +156,7 @@ def get_current_time():
     '''
     return datetime.datetime.now().isoformat(timespec='seconds')
 
+def add_to_erazed_files_list(file_path):
+    '''Add the file path of the file just erazed to keep track.'''
+    erazed_files = open(app.config['LOCATION_OF_STATIC_DIR'] + app.config['LIST_OF_ERAZED_FILES'], "a")
+    erazed_files.write(file_path + "\n")
