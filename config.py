@@ -13,7 +13,7 @@ ABS_PATH_DEPLOY_SCRIPT = './test_script.sh'
 ABS_PATH_DEPLOY_DIR = '../'
 ABS_PATH_IMPORT_UPDATES_NO_DEPLOY_SCRIPT = './test_script.sh'
 # ABS_PATH_IMPORT_UPDATES_NO_DEPLOY_SCRIPT = './IMPORTER_MISES_A_JOUR.sh'
-LIST_OF_ERAZED_FILES = 'data/erazed_files.txt'
+LIST_OF_ERAZED_FILES = 'static/erazed_files.txt'
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
