@@ -1,6 +1,6 @@
 DEBUG = False
 
-SECRET_KEY = b''
+# SECRET_KEY = b''
 MAX_SIZE_UPLOAD_MEGS = 16 * 1000 * 1000  # limit the maximum allowed payload to 16 megabytes
 
 # Paths should be overridden locally in instance/config.py
