@@ -13,8 +13,11 @@
     <p>rel_img_path = {{ rel_img_path }}</p>
     <p>full_path_to_img = {{ full_path_to_img }}</p>
     #}
-    
-{#<img src="{{ url_for(full_path_to_img) }}" />#}
-<img src="{{ full_path_to_img }}" style="max-width: 500px;"/>
-{# <img src="static/bubbles.jpg" />#}
+
+    <img src="{{ full_path_to_img }}" style="max-width: 500px;"/>
+
+    <div class='my-3'>
+        <a class="btn btn-danger" href='{{ url_for("delete_file") }}?q={{ decoded_file_path }}&redirect_to={{url_for("list_images")}}'>Delete</a>
+    </div>
+
 {% endblock %}

@@ -340,7 +340,13 @@ def delete_file():
                 flash("Error: %s file not found" % file_path)
 
         '''redirect as PRG pattern'''
-        return redirect(url_for('index'))
+        redirect_to = request.args.get('redirect_to')
+        if redirect_to is None:
+            redirect_to = 'index'
+        elif redirect_to[0] == '/':
+            # trim leading slash
+            redirect_to = redirect_to[1:]
+        return redirect(url_for(redirect_to))
 
     return render_template(
         'delete.html', 
