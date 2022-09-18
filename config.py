@@ -21,7 +21,7 @@ CONTENT_TYPES = [
     'home',
     'animation',
     'news',
-    'photos',
+    'photo',
     'dessins',
     'peintures',
 ]
