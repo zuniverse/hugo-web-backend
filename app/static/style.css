@@ -22,3 +22,6 @@ input[type=text] {
   height: 200px;
   z-index: 10;
 }
+div.footer {
+  margin: 4em;
+}

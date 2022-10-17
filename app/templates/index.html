@@ -6,8 +6,18 @@
 
   <h3>{{ utc_dt }}</h3>
 
+  {% set ns = namespace(oldcat="") %}
+
   {% for file_object in list_of_files %}
+
+    {% if not ns.oldcat == file_object.category %}
+      <hr>
+    {% endif %}
+
     <p class="list-content"><a href='{{ url_for("edit_file") }}?{{ file_object.encoded_params }}'>{{ file_object.rel_img_path }}</a></p>
+
+    {%set ns.oldcat = file_object.category %}
+
   {% endfor %}
 
 {% endblock %}
