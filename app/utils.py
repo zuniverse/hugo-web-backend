@@ -9,7 +9,7 @@ from app import app
 
 
 def list_all_files(content_path, is_new_file = False):
-    '''Lists all files and directories within a path, with params encoded and 
+    '''Lists all files and directories within a path, with params encoded and
     matching the path name for easy url params.
     '''
     print('content_path=' + content_path)
@@ -18,7 +18,7 @@ def list_all_files(content_path, is_new_file = False):
     project_root_dir = os.path.abspath(hugo_backend_dir + "/../")
     print('project_root_dir=' + project_root_dir)
     struct = []
-    
+
     for root, dirs, files in os.walk(content_path):
         for file_name in files:
             # skip '_index.en.md' & fr filenames
@@ -40,7 +40,7 @@ def list_all_files(content_path, is_new_file = False):
                 'rel_img_path': img_path_relative_to_img_dir,
                 # 'img_path_rel_to_local_symlink':
             })
-    sorted_struct = sorted(struct, key=lambda d: d['file_path'].lower()) 
+    sorted_struct = sorted(struct, key=lambda d: d['file_path'].lower())
 
     return sorted_struct
 
@@ -58,7 +58,7 @@ def sanitize_string(original_string):
         ord("ç"): "c",
         ord("ù"): "u",
     })
-    
+
     '''strip and substitute special characters for hyphens'''
     clean_string = clean_string.strip()
     clean_string = clean_string.replace(' ', '-')
@@ -71,26 +71,36 @@ def sanitize_string(original_string):
     clean_string = clean_string.replace("#", '-')
     clean_string = clean_string.replace("=", '-')
     clean_string = clean_string.replace(":", '-')
-    
+
     # replace all occurrences of multiple "-" like "---" by just "-"
     clean_string = re.sub(r'-+', '-', clean_string)
-    
+
     return clean_string
-  
-  
+
+
+def escape_special_characters(original_string):
+    '''
+    To be used within the quotes of a string.
+    '''
+    clean_string = original_string.strip()
+    clean_string = clean_string.replace('"', '\"')
+    clean_string = clean_string.replace("'", "\'")
+    return clean_string
+
+
 def get_file_header_and_body(head_and_body_str):
     '''Get the file and split the header from the body.'''
     header_str = re.search(r'\+\+\+(.*)\+\+\+', head_and_body_str, re.DOTALL).group(1)
     header_as_list_of_strings = header_str.split('\n')
     header_dict = parse_header_content(header_as_list_of_strings)
-    
+
     body_str = re.search(r'(^[^\+\+\+]+)|([^\+\+\+]+$)', head_and_body_str, re.DOTALL).group(0)
-    
+
     return {
         'header': header_dict,
         'body': body_str,
     }
-    
+
 
 def parse_header_content(header_str):
     '''parse input fields from a list of strings.
@@ -106,7 +116,7 @@ def parse_header_content(header_str):
         current_line_dict = {}
         line.strip()
         pos_of_equal = line.find('=')
-        
+
         # is the line an input key value field and NOT a comment ?
         if pos_of_equal != -1 and line[0] != '#':
             # key_val = line.split('=')
@@ -121,7 +131,7 @@ def parse_header_content(header_str):
             }
             full_file.append(current_line_dict)
             previous_line_was_a_comment = False
-        
+
         # else, the line IS a COMMENT, or anything but an input field
         else:
             if len(line) > 1:
@@ -134,7 +144,7 @@ def parse_header_content(header_str):
                     }
                     full_file.append(line_separator_dict)
                     previous_line_was_a_comment = True
-                
+
                 # get the field
                 current_line_dict = {
                     'is_input_field': False,

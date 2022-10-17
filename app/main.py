@@ -13,7 +13,8 @@ import subprocess
 import json
 
 from .utils import sanitize_string, list_all_files, get_file_header_and_body, \
-    allowed_file, get_current_time, add_to_erazed_files_list
+    allowed_file, get_current_time, add_to_erazed_files_list, \
+    escape_special_characters
 
 from app import app  # app is declared in __init__.py
 # app.secret_key = b'_9#y2L"F4Q8z\n\xec]/'
@@ -108,6 +109,7 @@ def receive_edit():
             
         # then check if it's a normal line or key value field
         elif current_line['is_input_field'] is False:
+            # here we have a regular line, not an input field
             recontructed_file.append(current_line['value'])
         
         # current_line is an input field
@@ -127,6 +129,12 @@ def receive_edit():
 
             # check if need quotes
             if current_line['structure']['is_in_quotes']:
+                # and if it does need quotes, escape special characters if it
+                # should be a human readable string
+                print (current_line['structure'])
+                if current_line['structure']['type'] == 'str':
+                    val = escape_special_characters(val)
+                # now add beginning and ending quotes
                 val = '"' + val + '"'
                 
             recontructed_file.append(clean_key + ' = ' + val)
@@ -142,7 +150,7 @@ def receive_edit():
         # update file
         with open(data['file_path'], 'w') as f:
             print(final_text_file, file=f)
-        pass
+        pass  # keep this ?
     else:
         # OR create new file @TODO check dir exists, and create it if not.
         cleaned_file_name = sanitize_string(data['title_new_file'])
