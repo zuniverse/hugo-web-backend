@@ -9,4 +9,4 @@ source "venv/bin/activate"
 # check i'm in good venv
 echo $VIRTUAL_ENV
 
-flask run
+python -m flask run
