@@ -17,14 +17,8 @@ LIST_OF_ERAZED_FILES = 'static/erazed_files.txt'
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
-CONTENT_TYPES = [
-    'home',
-    'animation',
-    'news',
-    'photo',
-    'dessins',
-    'peintures',
-]
+# defined in instance/config
+CONTENT_TYPES = []
 
 LANGUAGES_AVAILABLE = [
     'fr',
