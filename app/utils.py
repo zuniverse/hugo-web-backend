@@ -21,8 +21,8 @@ def list_all_files(content_path, is_new_file = False):
 
     for root, dirs, files in os.walk(content_path):
         for file_name in files:
-            # skip '_index.en.md' & fr filenames
-            if file_name[:6] == '_index' or file_name == 'default.md':
+            # skip filenames '_index.en.md', 'default.md', '.DS_Store'
+            if file_name[:6] == '_index' or file_name == 'default.md' or file_name == '.DS_Store':
                 continue
             # print(file_name)
             file_path = root + os.path.sep + file_name
