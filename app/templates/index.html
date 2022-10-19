@@ -12,11 +12,10 @@
 
     {% if not ns.oldcat == file_object.category %}
       <hr>
+      {%set ns.oldcat = file_object.category %}
     {% endif %}
 
     <p class="list-content"><a href='{{ url_for("edit_file") }}?{{ file_object.encoded_params }}'>{{ file_object.rel_img_path }}</a></p>
-
-    {%set ns.oldcat = file_object.category %}
 
   {% endfor %}
 

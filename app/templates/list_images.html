@@ -6,7 +6,13 @@
     <h3>{{ utc_dt }}</h3>
 
     <div id="list-of-images">
+    {% set ns = namespace(oldcat="") %}
     {% for file_object in list_of_files %}
+      {% if not ns.oldcat == file_object.category %}
+        <hr>
+        {%set ns.oldcat = file_object.category %}
+      {% endif %}
+
       {# debug #}
       {#
       <ul>
@@ -18,7 +24,6 @@
       <p class="list-content img-file"><a href='{{ url_for("show_image") }}?{{ file_object.encoded_params }}'>{{ file_object.rel_img_path }}</a></p>
     {% endfor %}
     </div> <!-- list-of-images -->
-    
 
     <div id='img-placement'></div>
 
