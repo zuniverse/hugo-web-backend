@@ -71,6 +71,7 @@ def sanitize_string(original_string):
     clean_string = clean_string.replace("#", '-')
     clean_string = clean_string.replace("=", '-')
     clean_string = clean_string.replace(":", '-')
+    clean_string = clean_string.replace(",", '-')
 
     # replace all occurrences of multiple "-" like "---" by just "-"
     clean_string = re.sub(r'-+', '-', clean_string)
@@ -123,6 +124,12 @@ def parse_header_content(header_str):
             key_val_number += 1
             key = line[:pos_of_equal].strip()
             val = line[pos_of_equal + 1:].strip().strip('"')
+
+            # assign default values if no value is found and exists
+            if val == "":
+                if 'value_by_default' in app.config['PARAMETERS'][key]:
+                    val = app.config['PARAMETERS'][key]['value_by_default']
+
             current_line_dict = {
                 'is_input_field': True,
                 'key': str(key_val_number) + '_' + key,

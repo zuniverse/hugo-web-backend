@@ -105,6 +105,7 @@ PARAMETERS = {
         'is_in_quotes': False,
         'is_required': False,
         'is_upload': False,
+        'value_by_default': 1,
     },
     'detail_titre': {
         'type': 'str',
