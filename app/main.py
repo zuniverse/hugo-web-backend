@@ -33,12 +33,12 @@ def index():
     list_of_files = list_all_files(app.config['CONTENT_PATH'])
 
     return render_template(
-        'index.html', 
+        'index.html',
         utc_dt=get_current_time(),
         list_of_files=list_of_files,
         custom_title='Home - List all content',
     )
-    
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -62,9 +62,9 @@ def edit_file():
     encoded_file_name = request.args.get('q')
     decoded_file_name = urllib.parse.unquote(encoded_file_name)
 
-    if request.args.get('isnewfile') == 'True': 
-        is_new_file = True 
-    else: 
+    if request.args.get('isnewfile') == 'True':
+        is_new_file = True
+    else:
         is_new_file = False
     with open(decoded_file_name) as f:
         file_as_str = f.read()
@@ -73,7 +73,7 @@ def edit_file():
     image_list = list_all_files(app.config['IMG_UPLOAD_FOLDER'])
     # return usable_dict  # returns json
     return render_template(
-        'edit_file.html', 
+        'edit_file.html',
         utc_dt=get_current_time(),
         file_as_dict=usable_dict,
         file_path=decoded_file_name,
@@ -82,14 +82,14 @@ def edit_file():
         custom_title='Edit file',
     )
 
-  
+
 @app.route('/receiveedit', methods=['POST'])
 def receive_edit():
     '''Receives and treats edits and new file creation.
-    Here we put special treatment to the ontent file, line by line.
+    Here we put special treatment to the content file, line by line.
     file_path is part of data as a hidden input.
     '''
-    
+
     # Get POST data.
     data = request.form
 
@@ -97,52 +97,58 @@ def receive_edit():
     with open(data['file_path']) as f:
         file_as_str = f.read()
     usable_dict = get_file_header_and_body(file_as_str)
-    
+
     '''start with toml header start'''
     recontructed_file = ['+++']
-    
+
     for current_line in usable_dict['header']:
         # print(current_line)  # debug
         # First, check first if it's only a template display field
         if current_line['key'] == 'template_display_only_raw_html':
             continue
-            
+
         # then check if it's a normal line or key value field
         elif current_line['is_input_field'] is False:
             # here we have a regular line, not an input field
             recontructed_file.append(current_line['value'])
-        
+
         # current_line is an input field
         else:
             key = current_line['key']
 
             # clean the key, remove prefix "1_"... added for html uniqueness input name
             clean_key = re.search(r'_(.*)', key, re.DOTALL).group(1)
-            
+
             # get new value passed to data
             val = data[key]
-            
+
             # special treatment for booleans
             if current_line['structure']['type'] == "bool":
-                # put here code... NO -> d it in template
+                # put here code... NO -> do it in template
                 pass
+
+            # special treatment for default values
+            if val == "":
+                if 'value_by_default' in current_line['structure']:
+                    # cast value to string, to reconstruct text line correctly
+                    val = str(current_line['structure']['value_by_default'])
 
             # check if need quotes
             if current_line['structure']['is_in_quotes']:
                 # and if it does need quotes, escape special characters if it
                 # should be a human readable string
-                print (current_line['structure'])
+                # print (current_line['structure'])
                 if current_line['structure']['type'] == 'str':
                     val = escape_special_characters(val)
                 # now add beginning and ending quotes
                 val = '"' + val + '"'
-                
+
             recontructed_file.append(clean_key + ' = ' + val)
-            
+
     '''then put header in between +++ and add body'''
     recontructed_file.append('+++')
     recontructed_file.append(data['body'])
-    
+
     '''stringify the list and print to file'''
     final_text_file = '\n'.join(recontructed_file)
 
@@ -155,7 +161,7 @@ def receive_edit():
         # OR create new file @TODO check dir exists, and create it if not.
         cleaned_file_name = sanitize_string(data['title_new_file'])
         cleaned_file_name = cleaned_file_name.lower()
-        # ^[^.]* match everything up to the first . 
+        # ^[^.]* match everything up to the first .
         # \.(\w*$) match from last dot till end of str
         # /([^/]+)$ match last word of slug
         '''category is based on the fact that in Hugo archetype filename is the name of the category.'''
@@ -188,7 +194,7 @@ def upload_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('upload_file', filename=filename))
     return render_template(
-        'upload.html', 
+        'upload.html',
         utc_dt=get_current_time(),
         content_types=app.config['CONTENT_TYPES'],
         custom_title='Upload a new image or file',
@@ -201,7 +207,7 @@ def select_archetypes():
     struct = list_all_files(app.config['ARCHETYPES_PATH'], True)
 
     return render_template(
-        'index.html', 
+        'index.html',
         utc_dt=get_current_time(),
         list_of_files=struct,
         is_new_file=True,
@@ -215,7 +221,7 @@ def list_images():
     list_of_files = list_all_files(app.config['IMG_UPLOAD_FOLDER'])
 
     return render_template(
-        'list_images.html', 
+        'list_images.html',
         utc_dt=get_current_time(),
         list_of_files=list_of_files,
         custom_title='List all images',
@@ -224,21 +230,21 @@ def list_images():
 
 @app.route('/show_image')
 def show_image():
-    '''Links to images in a different folder than static. 
+    '''Links to images in a different folder than static.
     Uses send_from_directory.
     '''
-    
+
     encoded_file_path = request.args.get('q')
     decoded_file_path = urllib.parse.unquote(encoded_file_path)
     hugo_backend_dir = os.getcwd()
     absolute_image_path = hugo_backend_dir + os.path.sep + decoded_file_path
     rel_img_path = request.args.get('rel_img_path')
-    
+
     '''https://flask.palletsprojects.com/en/1.0.x/api/#flask.send_from_directory'''
     # send_from_directory didnt work for me so I used a symlink
 
     return render_template(
-        'show_image.html', 
+        'show_image.html',
         utc_dt=get_current_time(),
         external_img="external_img",
         custom_title='Show 1 image',
@@ -255,7 +261,7 @@ def send_to_prod():
 
     hugo_backend_dir = os.getcwd()
     project_root_dir = os.path.abspath(hugo_backend_dir + "/../")
-    
+
     print('hugo_backend_dir=' + hugo_backend_dir)
     print('project_root_dir=' + project_root_dir)
     print('sys.executable=' + sys.executable)
@@ -287,7 +293,7 @@ def import_updates():
 
     hugo_backend_dir = os.getcwd()
     project_root_dir = os.path.abspath(hugo_backend_dir + "/../")
-    
+
     print('hugo_backend_dir=' + hugo_backend_dir)
     print('project_root_dir=' + project_root_dir)
     print('sys.executable=' + sys.executable)
@@ -325,7 +331,7 @@ def delete_file():
             decoded_file_name = ""
 
         return render_template(
-            'delete.html', 
+            'delete.html',
             utc_dt=get_current_time(),
             file_path=decoded_file_name,
             custom_title='Delete file',
@@ -334,11 +340,11 @@ def delete_file():
         # The requests.Response() Object contains the server's response to the HTTP request
         # Get POST data.
         data = request.form
-        
-        if data['file_path'] is not None: 
+
+        if data['file_path'] is not None:
             file_path = data['file_path']
-            print ('****** DELETE ' + file_path) 
-        
+            print ('****** DELETE ' + file_path)
+
             # If file exists, delete it
             if os.path.isfile(file_path):
                 os.remove(file_path)
@@ -357,7 +363,7 @@ def delete_file():
         return redirect(url_for(redirect_to))
 
     return render_template(
-        'delete.html', 
+        'delete.html',
         utc_dt=get_current_time(),
         content_types=app.config['CONTENT_TYPES'],
         custom_title='Confirm',
