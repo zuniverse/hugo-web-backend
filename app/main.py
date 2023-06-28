@@ -17,9 +17,6 @@ from .utils import sanitize_string, list_all_files, get_file_header_and_body, \
     escape_special_characters
 
 from app import app  # app is declared in __init__.py
-# app.secret_key = b'_9#y2L"F4Q8z\n\xec]/'
-# app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000  # limit the maximum allowed payload to 16 megabytes
-# app.config['UPLOAD_FOLDER'] = app.config['IMG_UPLOAD_FOLDER']
 app.secret_key = app.config['SECRET_KEY']
 app.config['MAX_CONTENT_LENGTH'] = app.config['MAX_SIZE_UPLOAD_MEGS']  # limit the maximum allowed payload to 16 megabytes
 app.config['UPLOAD_FOLDER'] = app.config['IMG_UPLOAD_FOLDER']
