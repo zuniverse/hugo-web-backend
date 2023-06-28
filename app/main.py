@@ -265,6 +265,7 @@ def send_to_prod():
     print('hugo_backend_dir=' + hugo_backend_dir)
     print('project_root_dir=' + project_root_dir)
     print('sys.executable=' + sys.executable)
+    print('app.config[ABS_PATH_DEPLOY_SCRIPT]=' + app.config['ABS_PATH_DEPLOY_SCRIPT'])
 
     rc = subprocess.run(
         [
@@ -297,6 +298,7 @@ def import_updates():
     print('hugo_backend_dir=' + hugo_backend_dir)
     print('project_root_dir=' + project_root_dir)
     print('sys.executable=' + sys.executable)
+    print('app.config[ABS_PATH_IMPORT_UPDATES_NO_DEPLOY_SCRIPT]=' + app.config['ABS_PATH_IMPORT_UPDATES_NO_DEPLOY_SCRIPT'])
 
     rc = subprocess.run(
         [
