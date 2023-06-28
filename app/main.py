@@ -61,11 +61,7 @@ def logout():
 def edit_file():
     encoded_file_name = request.args.get('q')
     decoded_file_name = urllib.parse.unquote(encoded_file_name)
-
-    if request.args.get('isnewfile') == 'True': 
-        is_new_file = True 
-    else: 
-        is_new_file = False
+    is_new_file = request.args.get('isnewfile') == 'True'
     with open(decoded_file_name) as f:
         file_as_str = f.read()
 
