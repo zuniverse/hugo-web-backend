@@ -18,20 +18,22 @@ def list_all_files(content_path, is_new_file = False):
     project_root_dir = os.path.abspath(hugo_backend_dir + "/../")
     print('project_root_dir=' + project_root_dir)
     struct = []
-
+    
     for root, dirs, files in os.walk(content_path):
         for file_name in files:
             # skip filenames '_index.en.md', 'default.md', '.DS_Store'
-            if file_name[:6] == '_index' or file_name == 'default.md' or file_name == '.DS_Store':
+            # if file_name[:6] == '_index' or file_name == 'default.md' or file_name == '.DS_Store':
+            if file_name == 'default.md' or file_name == '.DS_Store':
                 continue
             # print(file_name)
+
             file_path = root + os.path.sep + file_name
-            # print(file_name)
+            # print(file_path)
+            # print('filepath=' + f'{root + os.path.sep + file_name}')
             img_path_relative_to_img_dir = re.search(r'([^/]+)/([^/]+)$', file_path, re.DOTALL).group(0)
             params = {'q': file_path, 'isnewfile': is_new_file,
                       'rel_img_path': img_path_relative_to_img_dir}
             encoded_params = urllib.parse.urlencode(params)
-            # print('filepath=' + f'{root + os.path.sep + file_name}')
             struct.append({
                 'file_path': file_path,  # f'{root + os.path.sep + file_name}',
                 'encoded_params': encoded_params,
