@@ -186,3 +186,14 @@ def add_to_erazed_files_list(file_path):
     except:
         print("Error printing to erazed_file.txt: %s" % erazed_files)
         flash("Error printing to erazed_file.txt: %s" % erazed_files)
+
+def add_missing_header_tags_to_content_files():
+    '''
+    Add toml header tags such as youtube_video_id and end_text.
+    - list all content files
+    - extract the header
+    - check that header contains youtube_video_id
+    - if not, then add them, before first toml array declaration
+    - repeat for other missing tags, such as end_text
+    '''
+    pass

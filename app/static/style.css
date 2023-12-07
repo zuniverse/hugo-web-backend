@@ -25,3 +25,13 @@ input[type=text] {
 div.footer {
   margin: 4em;
 }
+#search-files {
+  position: absolute;
+  right: 5px;
+}
+#search-input {
+}
+#search-result {
+  background: #ddd;
+  padding: 5px;
+}

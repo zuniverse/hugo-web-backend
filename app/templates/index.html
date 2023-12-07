@@ -4,6 +4,11 @@
 
 {% block content %}
 
+  <div id='search-files'>
+    <input id="search-input" placeholder="Search" name="name" />
+    <div id='search-result'></div>
+  </div>
+
   <h3>{{ utc_dt }}</h3>
 
   {% set ns = namespace(oldcat="") %}

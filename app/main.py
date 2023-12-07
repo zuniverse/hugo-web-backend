@@ -21,6 +21,10 @@ app.secret_key = app.config['SECRET_KEY']
 app.config['MAX_CONTENT_LENGTH'] = app.config['MAX_SIZE_UPLOAD_MEGS']  # limit the maximum allowed payload to 16 megabytes
 app.config['UPLOAD_FOLDER'] = app.config['IMG_UPLOAD_FOLDER']
 
+# Comment this out in prod, use for dev only, supposedly to stop caching
+# app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
+
 
 @app.route('/')
 def index():
