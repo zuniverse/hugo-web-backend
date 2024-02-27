@@ -236,5 +236,17 @@ PARAMETERS = {
         'display_text_on_true': 'True - Image will be displayed',
         'display_text_on_false': 'False - Image will NOT be displayed',
     },
+    'label_your_email': {
+        'type': 'str',
+        'is_in_quotes': True,
+        'is_required': False,
+        'is_upload': False,
+    },
+    'label_your_message': {
+        'type': 'str',
+        'is_in_quotes': True,
+        'is_required': False,
+        'is_upload': False,
+    },
 }
 
