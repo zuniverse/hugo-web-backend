@@ -14,7 +14,7 @@ import json
 
 from .utils import sanitize_string, list_all_files, get_file_header_and_body, \
     allowed_file, get_current_time, add_to_erazed_files_list, \
-    escape_special_characters
+    escape_special_characters_within_string_inputs
 
 from app import app  # app is declared in __init__.py
 app.secret_key = app.config['SECRET_KEY']
@@ -87,6 +87,8 @@ def receive_edit():
     file_path is part of data as a hidden input.
     '''
 
+    # print("receive_edit")  # debug
+
     # Get POST data.
     data = request.form
 
@@ -136,7 +138,9 @@ def receive_edit():
                 # should be a human readable string
                 # print (current_line['structure'])
                 if current_line['structure']['type'] == 'str':
-                    val = escape_special_characters(val)
+                    # print(val) #debug
+                    val = escape_special_characters_within_string_inputs(val)
+                    # print(val) #debug
                 # now add beginning and ending quotes
                 val = '"' + val + '"'
 
@@ -259,10 +263,10 @@ def send_to_prod():
     hugo_backend_dir = os.getcwd()
     project_root_dir = os.path.abspath(hugo_backend_dir + "/../")
 
-    print('hugo_backend_dir=' + hugo_backend_dir)
-    print('project_root_dir=' + project_root_dir)
-    print('sys.executable=' + sys.executable)
-    print('app.config[ABS_PATH_DEPLOY_SCRIPT]=' + app.config['ABS_PATH_DEPLOY_SCRIPT'])
+    # print('hugo_backend_dir=' + hugo_backend_dir)  # debug
+    # print('project_root_dir=' + project_root_dir)  # debug
+    # print('sys.executable=' + sys.executable)  # debug
+    # print('app.config[ABS_PATH_DEPLOY_SCRIPT]=' + app.config['ABS_PATH_DEPLOY_SCRIPT'])  # debug
 
     rc = subprocess.run(
         [
@@ -292,10 +296,10 @@ def import_updates():
     hugo_backend_dir = os.getcwd()
     project_root_dir = os.path.abspath(hugo_backend_dir + "/../")
 
-    print('hugo_backend_dir=' + hugo_backend_dir)
-    print('project_root_dir=' + project_root_dir)
-    print('sys.executable=' + sys.executable)
-    print('app.config[ABS_PATH_IMPORT_UPDATES_NO_DEPLOY_SCRIPT]=' + app.config['ABS_PATH_IMPORT_UPDATES_NO_DEPLOY_SCRIPT'])
+    # print('hugo_backend_dir=' + hugo_backend_dir)
+    # print('project_root_dir=' + project_root_dir)
+    # print('sys.executable=' + sys.executable)
+    # print('app.config[ABS_PATH_IMPORT_UPDATES_NO_DEPLOY_SCRIPT]=' + app.config['ABS_PATH_IMPORT_UPDATES_NO_DEPLOY_SCRIPT'])
 
     rc = subprocess.run(
         [

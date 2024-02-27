@@ -81,13 +81,22 @@ def sanitize_string(original_string):
     return clean_string
 
 
-def escape_special_characters(original_string):
+def escape_special_characters_within_string_inputs(original_string):
     '''
     To be used within the quotes of a string.
+    Used when processing the POSTed value of a field.
     '''
     clean_string = original_string.strip()
-    clean_string = clean_string.replace('"', '\"')
-    clean_string = clean_string.replace("'", "\'")
+    clean_string = clean_string.replace('"', r'\"')
+    return clean_string
+
+def un_escape_special_characters_within_string_inputs(original_string):
+    '''
+    To be used within the quotes of a string.
+    Used when displaying a value field in a form.
+    '''
+    clean_string = original_string.strip()
+    clean_string = clean_string.replace(r'\"', r'"')
     return clean_string
 
 
@@ -126,6 +135,11 @@ def parse_header_content(header_str):
             key_val_number += 1
             key = line[:pos_of_equal].strip()
             val = line[pos_of_equal + 1:].strip().strip('"')
+
+            #special treatment on val field (remove \# for example)
+            # print(val) #debug
+            val = un_escape_special_characters_within_string_inputs(val)
+            # print(val) #debug
 
             # assign default values if no value is found and exists
             if val == "":
