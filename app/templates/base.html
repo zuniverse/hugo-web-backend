@@ -35,14 +35,15 @@
 <script>
 console.log('inline js loaded, to be put in its own file when cache invalidates :/')
 
-isASearchPage = false
+var isASearchPage = false
+var searchInput = null
 
 if (document.querySelector("input#search-input")) {
   isASearchPage = true
   
   //get all html elements
   var allFilesObj = document.querySelectorAll(".list-content a")
-  const searchInput = document.querySelector("input#search-input");
+  searchInput = document.querySelector("input#search-input");
   searchInput.addEventListener("change", findMatch);
   const searchResultsDiv = document.getElementById("search-result")
 }
@@ -73,7 +74,7 @@ function findMatch(e) {
 }
 
 function clearSearchText() {
-  if (isASearchPage) {
+  if (isASearchPage && searchInput) {
     searchInput.value = '';
   }
 }
