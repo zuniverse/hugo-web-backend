@@ -1,10 +1,10 @@
-// console.log('img_file_hover.js loaded')
+console.log("img_file_hover.js loaded");
 let img_list = document.querySelectorAll(".img-file");
 // console.log(img_list)
 
 function build_img_thumbnail(elem_href) {
   let img_element = '<img alt="" src="' + elem_href + '" id="img" />';
-  let div_element = '<div class="img_element_hover">' + img_element + '</div>';
+  let div_element = '<div class="img_element_hover">' + img_element + "</div>";
   return div_element;
 }
 
@@ -22,4 +22,3 @@ function display_img_thumbnail(elem_href) {
 //     display_img_thumbnail(elem_href)
 //   });
 // })
-
