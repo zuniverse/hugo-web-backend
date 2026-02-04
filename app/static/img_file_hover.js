@@ -1,3 +1,6 @@
+// Load and display an image thumbnail when hovering over an image file link.
+// TODO : currently disabled because images are not served locally.
+
 console.log("img_file_hover.js loaded");
 let img_list = document.querySelectorAll(".img-file");
 // console.log(img_list)
