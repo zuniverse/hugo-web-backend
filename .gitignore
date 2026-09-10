@@ -1,4 +1,5 @@
 instance/config.py
+Notes.txt
 *.pyc
 .vscode/
 *.log

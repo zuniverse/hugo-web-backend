@@ -1,0 +1,14 @@
+[tool.black]
+line-length = 88
+target-version = ["py313"]
+extend-exclude = '''
+/(
+  | venv
+  | share
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+skip = ["venv", "share"]
