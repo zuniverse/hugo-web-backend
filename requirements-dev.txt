@@ -1,0 +1,11 @@
+# Outils de dev uniquement (formatage). Installation :
+#   pip install -r requirements-dev.txt
+# Configuration : voir pyproject.toml
+# Formater :
+#   isort run.py config.py tests/ app/ instance/
+#   black run.py config.py tests/ app/ instance/
+
+-r requirements.txt
+
+black>=26.5.1
+isort>=9.0.1
