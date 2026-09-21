@@ -1,5 +1,7 @@
 instance/config.py
 Notes.txt
+venv_BAK
+
 *.pyc
 .vscode/
 *.log
