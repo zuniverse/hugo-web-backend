@@ -11,11 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("this is a search page");
   clearSearchText();
 
-  //get all html elements
+  // Build a list of all file titles from html elements
   allFilesObj = Array.from(document.querySelectorAll(".list-content a"));
   console.log("allFilesObj length:", allFilesObj.length);
   // searchInput = document.querySelector("input#search-input");
-  //searchInput.addEventListener("change", findMatch);
+  // searchInput.addEventListener("change", findMatch);
   searchResultsDiv = document.getElementById("search-result");
   if (!searchResultsDiv) {
     console.warn("Missing element: #search-result");
@@ -28,32 +28,35 @@ document.addEventListener("DOMContentLoaded", () => {
 // analyse input & pour chaque input in text, retourner la liste des elem et l'afficher
 function findMatch(e) {
   const q = e.target.value.trim();
-  console.log("searching for ", q);
+
+  // debug
+  // console.log("searching for ", q);
   // return
 
-  // si vide, on efface
+  // if empty search input box, we erase the search results
   if (q === "") {
     searchResultsDiv.innerHTML = "";
     return;
   }
 
-  let found = [];
+  // find matches
+  let matchesFound = [];
   const needle = q.trim().toLowerCase();
   for (var i = 0; i < allFilesObj.length; i++) {
     const hay = allFilesObj[i].textContent.toLowerCase();
     //if (allFilesObj[i].textContent.toLowerCase().includes(q.toLowerCase())) {
     if (matchesOrderedSubsequence(hay, needle)) {
-      found.push({
+      matchesFound.push({
         href: allFilesObj[i].href,
         text: allFilesObj[i].textContent,
       });
     }
   }
 
-  // à separer
+  // display matches found in html (TODO: separate this into a different function)
   let contents = "";
-  if (found.length > 0) {
-    found.forEach((elem) => {
+  if (matchesFound.length > 0) {
+    matchesFound.forEach((elem) => {
       const div =
         '<p class="list-content"><a href="' +
         elem.href +
@@ -78,15 +81,15 @@ function clearSearchText() {
 // TODO chercher un match par sous-sequence ordonnée de texte plutot que query length,
 // pour obtenir une série de lettre séquentielles qui matchent le haystack
 // pour ne pas que comme actuellement, "rdme" match "ReadMe.txt"
-function matchesOrderedSubsequence(text, query) {
-  text = text.toLowerCase();
-  query = query.toLowerCase();
+function matchesOrderedSubsequence(hay, needle) {
+  hay = hay.toLowerCase();
+  needle = needle.toLowerCase();
 
   let i = 0;
-  for (const c of text) {
-    if (c === query[i]) {
+  for (const c of hay) {
+    if (c === needle[i]) {
       i++;
-      if (i === query.length) return true;
+      if (i === needle.length) return true;
     }
   }
   return false;
